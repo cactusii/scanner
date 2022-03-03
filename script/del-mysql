@@ -1,0 +1,9 @@
+use property_db;
+delete from django_migrations where id='37';
+drop table api_authconfig;
+drop table api_finger;
+drop table api_portinfo;
+drop table api_sitefinger;
+drop table api_siteinfo;
+drop table api_ipinfo;
+drop table api_scantasks;

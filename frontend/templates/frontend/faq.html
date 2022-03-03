@@ -1,0 +1,677 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+
+<div class="container">
+
+    <div class="row my-3">
+        <div class="card shadow col-12">
+            <div class="card-body container">
+
+
+                <div class="row align-items-center p-3">
+                    <div class="col d-flex flex-column flex-md-row align-items-center">
+                        <i class="bi bi-cloud" style="font-size:30px"></i>
+                        <div class="ml-3">
+                            <h4>API说明</h4>
+                            <p class="text-muted mb-0">
+                                api接口说明(2020.02.23)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3">
+                    <div class="version">
+                        <h3># 路径</h3>
+                        <div class="content ml-5">
+                            <p>路径示例: <code>http://127.0.0.1:8000/api/v1/</code></p>
+                        </div>
+                    </div>
+
+                    <div class="version mt-3">
+                        <h3># 资源</h3>
+
+                        <!--task-->
+                        <div class="content ml-5">
+                            <h4>## 任务(task)</h4>
+                            <p>路径: <code>/api/v1/tasks</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <p>前4项参数至少选择一项，一项也不选则返回前20项</p>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>id</td>
+                                        <td>string</td>
+                                        <td>task_id，task的唯一标识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>string</td>
+                                        <td>task name，task名称，模糊匹配</td>
+                                    </tr>
+                                    <tr>
+                                        <td>target</td>
+                                        <td>string</td>
+                                        <td>task_id，任务扫描目标，模糊匹配</td>
+                                    </tr>
+                                    <tr>
+                                        <td>port_type</td>
+                                        <td>int</td>
+                                        <td>task_id，端口扫描类型，=1(TOP100)，=2(TOP1000)，=3(全端口)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>start</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>end</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例: <code>http://127.0.0.1:8000/api/v1/tasks?start=0&end=2</code>
+                                    <pre>
+{
+  "code": "200",
+  "data": [
+    {
+      "id": "taskDpMEgK1ZySfje4a",
+      "name": "test2",
+      "target": "bupt.edu.cn",
+      "port_type": 2,
+      "add_time": "2022-02-23T07:26:59.560",
+      "end_time": "2022-02-23T07:27:32.560",
+      "status": 3
+    },
+    {
+      "id": "taskIfvtwMuVs3REbaA",
+      "name": "local",
+      "target": "192.168.31.1",
+      "port_type": 2,
+      "add_time": "2022-02-23T07:32:39.246",
+      "end_time": "2022-02-23T07:33:09.245",
+      "status": 3
+    }
+  ]
+}
+</pre>
+                                </div>
+                            </div>
+
+                            <div class="ml-3">
+                                <h5>### POST</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><code>*</code>name</td>
+                                        <td>string</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>*</code>target</td>
+                                        <td>string</td>
+                                    </tr>
+                                    <tr>
+                                        <td>port_type</td>
+                                        <td>int</td>
+                                        <td>task_id，端口扫描类型，=1：TOP100(默认)，=2：TOP1000，=3：全端口</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>curl -d'name=test4&target=10.23.23.0/28' -X POST http://127.0.0.1:8000/api/v1/tasks
+</code>
+                                    <br><code>{"status": 200, "msg": "success"}</code>
+                                </div>
+                            </div>
+
+                            <div class="ml-3">
+                                <h5>### DELETE</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>id</td>
+                                        <td>string</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!--finger-->
+                        <div class="content ml-5">
+                            <h4>## 指纹(fingerprint)</h4>
+                            <p>路径: <code>/api/v1/finger</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>id</td>
+                                        <td>string</td>
+                                        <td>finger_id，finger的唯一标识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>string</td>
+                                        <td>finger名称，模糊匹配</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>http://127.0.0.1:8000/api/v1/finger</code>
+                                    <pre>
+{
+  "code": 200,
+  "data": [
+    {
+      "id": "fig983my50j7btUAvg",
+      "name": "fingerA",
+      "desc": "something desc",
+      "finger_print": "body=\"website content\" || title=\"website\"",
+      "body": "['website content']",
+      "title": "['website']",
+      "header": "[]",
+      "icon_hash": "[]",
+      "add_time": "2022-02-23T08:00:32.631"
+    }
+  ]
+}
+                                    </pre>
+                                </div>
+
+                            </div>
+
+                            <div class="ml-3">
+                                <h5>### POST</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><code>*</code>name</td>
+                                        <td>string</td>
+                                    </tr>
+                                    <tr>
+                                        <td>desc</td>
+                                        <td>string</td>
+                                        <td>指纹描述信息</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>*</code>fingerprint</td>
+                                        <td>string</td>
+                                        <td>指纹信息</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>curl -d'name=test&fingerprint=title="testfingerprint"' -X POST http://127.0.0.1:8000/api/v1/finger</code>
+                                    <br><code>{"status": 200, "msg": "success"}</code>
+                                </div>
+                            </div>
+
+                            <div class="ml-3">
+                                <h5>### DELETE</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>id</td>
+                                        <td>string</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--ip-->
+                        <div class="content ml-5">
+                            <h4>## IP资产(IP)</h4>
+                            <p>路径: <code>/api/v1/ipinfo</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>task_id</td>
+                                        <td>string</td>
+                                        <td>关联的task_id, 每个ip与一个task关联</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ip</td>
+                                        <td>string</td>
+                                        <td>ip address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>port</td>
+                                        <td>string</td>
+                                        <td>port端口</td>
+                                    </tr>
+                                    <tr>
+                                        <td>os</td>
+                                        <td>string</td>
+                                        <td>操作系统</td>
+                                    </tr>
+                                    <tr>
+                                        <td>start</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>end</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用，end=-1表示到末尾</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>127.0.0.1:8000/api/v1/ipinfo?start=1&end=1</code>
+                                    <pre>
+{
+  "code": "200",
+  "data": [
+    {
+      "id": "ip0SfnGXJFyx7tQHD",
+      "task_id": "taskDpMEgK1ZySfje4a",
+      "ip_addr": "157.148.36.163",
+      "os_name": "Linux 2.6.32",
+      "port_list": [
+        25,
+        110,
+        143,
+        465,
+        587,
+        843,
+        993,
+        995
+      ],
+      "accuracy": 85,
+      "related_domain": []
+    },
+    {
+      "id": "ipcSLfbU6tJmO4RCy",
+      "task_id": "taskIfvtwMuVs3REbaA",
+      "ip_addr": "192.168.31.1",
+      "os_name": "OpenWrt Attitude Adjustment (Linux 3.3) - Barrier Breaker (Linux 3.8)",
+      "port_list": [
+        53,
+        80,
+        8080,
+        8192,
+        8193,
+        8383,
+        8443,
+        8899
+      ],
+      "accuracy": 95,
+      "related_domain": []
+    }
+  ]
+}
+                                    </pre>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!--service-->
+                        <div class="content ml-5">
+                            <h4>## 服务资产(service)</h4>
+                            <p>路径: <code>/api/v1/service</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>ip</td>
+                                        <td>string</td>
+                                        <td>ip address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>port</td>
+                                        <td>string</td>
+                                        <td>返回包含此port的所有service</td>
+                                    </tr>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>string</td>
+                                        <td>service name, 模糊匹配</td>
+                                    </tr>
+                                    <tr>
+                                        <td>product</td>
+                                        <td>string</td>
+                                        <td>product name, 模糊匹配</td>
+                                    </tr>
+                                    <tr>
+                                        <td>protocol</td>
+                                        <td>string</td>
+                                        <td>protocol name, 模糊匹配</td>
+                                    </tr>
+                                    <tr>
+                                        <td>start</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>end</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>http://127.0.0.1:8000/api/v1/service?start=0&end=2</code>
+                                    <pre>
+{
+  "code": "200",
+  "data": [
+    {
+      "id": "port0DW8cb71fOtPeJx",
+      "ip_id": "ipN90WOf3ApGtBcMC",
+      "ip_addr": "157.148.36.163",
+      "port_num": 143,
+      "service_name": "tcpwrapped",
+      "version": "",
+      "product": "",
+      "protocol": "tcp"
+    },
+    {
+      "id": "port0ixeurojKb9BWIT",
+      "ip_id": "iplozUrxBjOQ0F2JH",
+      "ip_addr": "157.148.36.163",
+      "port_num": 110,
+      "service_name": "pop3",
+      "version": "",
+      "product": "",
+      "protocol": "tcp"
+    }
+  ]
+}
+                                    </pre>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!--site-->
+                        <div class="content ml-5">
+                            <h4>## 站点资产(site)</h4>
+                            <p>路径: <code>/api/v1/site</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>task_id</td>
+                                        <td>string</td>
+                                        <td>关联的task_id, 每个site与一个task关联</td>
+                                    </tr>
+                                    <tr>
+                                        <td>site</td>
+                                        <td>string</td>
+                                        <td>站点名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ip</td>
+                                        <td>string</td>
+                                    </tr>
+                                    <tr>
+                                        <td>title</td>
+                                        <td>string</td>
+                                    </tr>
+                                    <tr>
+                                        <td>start</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>end</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>http://127.0.0.1:8000/api/v1/site?start=0&end=2</code>
+                                    <pre>
+{
+  "code": "200",
+  "data": [
+    {
+      "id": "siteCGW86RayqnBPbDv",
+      "task_id": "taskIfvtwMuVs3REbaA",
+      "site": "http://192.168.31.1",
+      "host_name": "192.168.31.1",
+      "ip": "192.168.31.1",
+      "title": "\u5c0f\u7c73\u8def\u7531\u5668",
+      "state": "200",
+      "headers": "HTTP/1.1 200 OK\nServer: nginx\nDate: Wed, 23 Feb 2022 07:32:37 GMT\nContent-Type: text/html\nContent-Length: 1770\nLast-Modified: Tue, 26 Nov 2019 08:31:36 GMT\nConnection: close\nETag: \"5ddce2e8-6ea\"\nExpires: Thu, 01 Jan 1970 00:00:01 GMT\nCache-Control: no-cache\nMiCGI-Switch: 1 1\nMiCGI-TproxyInfo: 192.168.31.1:80\nMiCGI-Upstream: 192.168.31.1\nMiCGI-Client-Ip: 192.168.31.151\nMiCGI-Host: 192.168.31.1\nMiCGI-Http-Host: 192.168.31.1\nMiCGI-Server-Ip: 192.168.31.1\nMiCGI-Server-Port: 80\nMiCGI-Status: LUAROOT\nMiCGI-Preload: no\nAccept-Ranges: bytes",
+      "http_server": "nginx",
+      "body_length": 1770,
+      "favicon": "",
+      "fld": ""
+    },
+    {
+      "id": "siteGucNBVa5DxEhFM7",
+      "task_id": "taskevHKGnIVhOCaDd2",
+      "site": "http://10.28.182.220",
+      "host_name": "10.28.182.220",
+      "ip": "10.28.182.220",
+      "title": "Welcome to nginx!",
+      "state": "200",
+      "headers": "HTTP/1.1 200 OK\nServer: nginx/1.14.0 (Ubuntu)\nDate: Mon, 28 Feb 2022 05:27:26 GMT\nContent-Type: text/html\nLast-Modified: Wed, 26 Jan 2022 08:59:50 GMT\nTransfer-Encoding: chunked\nConnection: keep-alive\nETag: W/\"61f10d86-264\"\nContent-Encoding: gzip\nContent-Length: 612",
+      "http_server": "nginx/1.14.0 (Ubuntu)",
+      "body_length": 612,
+      "favicon": "",
+      "fld": ""
+    }
+  ]
+}                                    </pre>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!--sub_domain-->
+                        <div class="content ml-5">
+                            <h4>## 子域名资产(sub_domain)</h4>
+                            <p>路径: <code>/api/v1/sub_domain</code></p>
+
+                            <div class="ml-3">
+                                <h5>### GET</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>task_id</td>
+                                        <td>string</td>
+                                        <td>关联的task_id, 每个domain与一个task关联</td>
+                                    </tr>
+                                    <tr>
+                                        <td>domain</td>
+                                        <td>string</td>
+                                        <td>域名</td>
+                                    </tr>
+                                    <tr>
+                                        <td>type</td>
+                                        <td>string</td>
+                                        <td>解析类型</td>
+                                    </tr>
+                                    <tr>
+                                        <td>record</td>
+                                        <td>string</td>
+                                        <td>记录值</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ip</td>
+                                        <td>string</td>
+                                        <td>关联IP</td>
+                                    </tr>
+                                    <tr>
+                                        <td>start</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    <tr>
+                                        <td>end</td>
+                                        <td>int</td>
+                                        <td>数据范围，供分页使用</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    示例：<code>http://127.0.0.1:8000/api/v1/sub_domain?start=0&end=2</code>
+                                    <pre>
+{
+  "code": "200",
+  "data": [
+    {
+      "id": "dom07ljkI3utrKDQpd",
+      "task_id": "taskDpMEgK1ZySfje4a",
+      "domain": "ntp.bupt.edu.cn",
+      "type": "A",
+      "record": "211.68.71.26",
+      "ip": "211.68.71.26"
+    },
+    {
+      "id": "dom0fUTIo8rWcxKmH1",
+      "task_id": "taskDpMEgK1ZySfje4a",
+      "domain": "job.bupt.edu.cn",
+      "type": "CNAME",
+      "record": "vn4.bupt.edu.cn",
+      "ip": "114.255.40.166"
+    }
+  ]
+}
+                                    </pre>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="version mt-3">
+                        <h3># 返回</h3>
+
+                        <div class="content ml-5">
+                            <div class="ml-3">
+                                <h5>### G状态码</h5>
+                                <p>200 OK - [GET]：成功返回请求数据; 新建或修改数据成功; 删除数据成功。</p>
+                                <p>400 INVALID REQUEST - [POST]：请求有错误或服务端处理错误。</p>
+                                <pre>
+{
+    "code": "200",
+    "data": [
+        {
+            "id": "id123",
+            "name": "name123"
+        },
+        {
+        },
+        ...
+    ]
+}
+</pre>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

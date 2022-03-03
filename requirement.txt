@@ -1,0 +1,9 @@
+django==3.2.11
+pymysql==1.0.2
+requests==2.21.0
+tld==0.9.2
+python-nmap==0.6.1
+dnspython
+jinja2
+keystonauth1
+python-keystoneclient

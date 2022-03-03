@@ -1,0 +1,402 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+<div class="container my-3">
+
+    <div class="row">
+        <div class="card shadow col">
+            <div class="card-body">
+                <!--data-->
+                <div>
+                    <!--head-->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+                        <li class="nav-item" role="presentation">
+                            <a class="{{ active.ip }}" id="subTitle1" data-toggle="tab" href="#subTitleIp"
+                               role="tab">IP</a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <a class="{{ active.service }}" id="subTitle4" data-toggle="tab" href="#subTitleServe"
+                               role="tab" aria-controls="contact" aria-selected="false">
+                                服务
+                            </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <a class="{{ active.site }}" id="subTitle2" data-toggle="tab" href="#subTitleSite"
+                               role="tab"
+                               aria-controls="contact" aria-selected="false">站点</a>
+                        </li>
+
+
+                        <li class="nav-item" role="presentation">
+                            <a class="{{ active.sub_domain }}" id="subTitle3" data-toggle="tab" href="#subTitleDomain"
+                               role="tab"
+                               aria-controls="profile" aria-selected="false">子域名</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent">
+
+                        <!--ip-->
+                        <div class="{{ active.tab_ip }}" id="subTitleIp" role="tabpanel"
+                             aria-labelledby="contact-tab">
+
+                            <!--search-->
+                            <form action="/ip/" method="get">
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">IP</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="ip-ip">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Port</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="ip-port">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">操作系统</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="ip-os">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="my-3">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:30">#</th>
+                                        <th style="width:50">task_id</th>
+                                        <th style="width:50">IP</th>
+                                        <th style="width:50">开放端口</th>
+                                        <th style="width:50">关联域名</th>
+                                        <th style="width:50">操作系统</th>
+                                        <th style="width:50">Accuracy</th>
+                                        <th style="width:80">Extra info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <mytag class="ip_info_list">
+                                        {% for ip_info in ip_info_list %}
+                                        <tr>
+                                            <td># {{ loop.index }}</td>
+                                            <td>{{ (ip_info.task_id.id | string)[4:10] ~ "..." }}</td>
+                                            <td>{{ ip_info.ip_addr }}</td>
+                                            <td>{{ (ip_info.port_list | string)[0:10] ~ "..." }}</td>
+                                            <td>{{ ip_info.related_domain }}</td>
+                                            <td>{{ ip_info.os_name }}</td>
+                                            <td>{{ ip_info.accuracy }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </mytag>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--serve-->
+                        <div class="{{ active.tab_service }}" id="subTitleServe" role="tabpanel"
+                             aria-labelledby="contact-tab">
+
+                            <form action="/service/" method="get">
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">IP</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="service-ip">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Port</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="service-port"
+                                               aria-describedby="search-label-2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">服务</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="service-service"
+                                               aria-describedby="search-label-3">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Product</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="service-product"
+                                               aria-describedby="search-label-1">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Protocol</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="service-protocol"
+                                               aria-describedby="search-label-2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                            <div class="my-3">
+                                <table class="table finger-list">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>task_id</th>
+                                        <th>IP</th>
+                                        <th>端口</th>
+                                        <th>服务</th>
+                                        <th>Product</th>
+                                        <th>Version</th>
+                                        <th>Protocol</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for port_info in port_info_list %}
+                                    <tr>
+                                        <td># {{ loop.index }}</td>
+                                        <td>{{ (port_info.ip_id.task_id.id | string)[4:10] ~ "..." }}</td>
+                                        <td>{{ port_info.ip_id.ip_addr }}</td>
+                                        <td>{{ port_info.port_num }}</td>
+                                        <td>{{ port_info.service_name }}</td>
+                                        <td>{{ port_info.product }}</td>
+                                        <td>{{ port_info.version }}</td>
+                                        <td>{{ port_info.protocol }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!--site-->
+                        <div class="{{ active.tab_site }}" id="subTitleSite" role="tabpanel"
+                             aria-labelledby="home-tab">
+
+                            <form action="/site/" method="get">
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">站点</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="site-site"
+                                               aria-describedby="search-label-1">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Host name</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="site-hostname"
+                                               aria-describedby="search-label-2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">IP</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="site-ip"
+                                               aria-describedby="search-label-3">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="my-3">
+                                <table class="table finger-list">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>task_id</th>
+                                        <th>站点</th>
+                                        <th>Host name</th>
+                                        <th>IP</th>
+                                        <th>Title</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for site_info in site_info_list %}
+                                    <tr>
+                                        <td># {{ loop.index }}</td>
+                                        <td>{{ (site_info.task_id.id | string)[3:10] ~ "..." }}</td>
+                                        <td>{{ site_info.site }}</td>
+                                        <td>{{ site_info.host_name }}</td>
+                                        <td>{{ site_info.ip }}</td>
+                                        <td>{{ site_info.title }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--domain-->
+                        <div class="{{ active.tab_sub_domain }}" id="subTitleDomain" role="tabpanel"
+                             aria-labelledby="profile-tab">
+
+                            <form action="/sub_domain/" method="get">
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">域名</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="sub_domain-domain"
+                                               aria-describedby="search-label-1">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">记录值</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="sub_domain-record"
+                                               aria-describedby="search-label-2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">类型</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="sub_domain-type"
+                                               aria-describedby="search-label-3">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="search-group my-3 row">
+                                    <div class="input-group col-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">IP</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="sub_domain-ip"
+                                               aria-describedby="search-label-1">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="submit">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+
+                            <div class="my-3">
+                                <table class="table finger-list">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>task_id</th>
+                                        <th>域名</th>
+                                        <th>解析类型</th>
+                                        <th>记录值</th>
+                                        <th>关联IP</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for sub_domain in sub_domain_list %}
+                                    <tr>
+                                        <td># {{ loop.index }}</td>
+                                        <td>{{ (sub_domain.task_id.id | string)[3:10] ~ "..." }}</td>
+                                        <td>{{ sub_domain.domain }}</td>
+                                        <td>{{ sub_domain.type }}</td>
+                                        <td>{{ sub_domain.record }}</td>
+                                        <td>{{ sub_domain.ips }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

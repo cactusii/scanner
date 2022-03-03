@@ -1,0 +1,102 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+
+<div class="row my-3">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row p-3">
+                    <div class="col d-flex flex-column flex-md-row align-items-center">
+                        <i class="bi bi-person-square" style="font-size:40px"></i>
+                        <div class="ml-3">
+                            <h4> 认证配置 </h4>
+                            <p class="text-muted mb-0"> 用于带权限的服务扫描 </p>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <button class="btn btn-primary mr-3" data-toggle="modal" data-target="#configModal">
+                            添加配置
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <table class="table finger-list">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>config_id</th>
+                            <th>名称</th>
+                            <th>凭证id</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for config in config_list %}
+                        <tr>
+                            <td># {{ loop.index }}</td>
+                            <td>{{ (config.id | string)[3:10] ~ "..." }}</td>
+                            <td>{{ config.service_name }}</td>
+                            <td>{{ config.userid }}</td>
+                            <td>{{ (config.add_time | string)[0:16] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm config-delete"
+                                        data-target="{{ config.id }}">
+                                    删除配置
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">自定义添加组件认证信息</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="configSelfAddName"><code>*</code>组件/服务名</label>
+                        <input type="text" class="form-control" id="configSelfAddName">
+                    </div>
+                    <div class="form-group">
+                        <label for="configSelfAddUserid"><code>*</code>凭证id</label>
+                        <input type="text" class="form-control" id="configSelfAddUserid"
+                               aria-describedby="userHelp3">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="configSelfAddPassword"><code>*</code>Password</label>
+                        <input type="password" class="form-control" id="configSelfAddPassword">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success config-create">创建</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
+{% block extrascript %}
+<script src="/static/js/form-addons.js"></script>
+<script src="/static/js/my.js"></script>
+{% endblock %}

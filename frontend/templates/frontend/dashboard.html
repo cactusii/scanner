@@ -1,0 +1,166 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+
+<!--任务管理-->
+<div class="row my-3">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row p-3">
+                    <div class="col d-flex flex-column flex-md-row align-items-center">
+                        <i class="bi bi-list-task" style="font-size:40px"></i>
+                        <div class="ml-3">
+                            <h4> 任务管理 </h4>
+                            <p class="text-muted mb-0"> 展示任务的运行状态 </p>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-primary mr-3" data-toggle="modal"
+                                data-target="#taskModal"
+                                data-whatever="@mdo"> 新建任务
+                        </button>
+                    </div>
+                </div>
+
+
+                <table class="table task-list" style="table-layout:fixed">
+                    <thead>
+                    <tr>
+                        <th style="width:50">#</th>
+                        <th style="width:100">task_id</th>
+                        <th style="width:100">任务名称</th>
+                        <th style="width:150">任务目标</th>
+                        <th style="width:120">端口扫描类型</th>
+                        <th style="width:150">开始时间</th>
+                        <th style="width:150">结束时间</th>
+                        <th style="width:120">状态</th>
+                        <th style="width:100">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td># {{ loop.index }}</td>
+                        <td>{{ (task.id | string)[4:10] ~ "..." }}</td>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.target }}</td>
+                        {% if task.port_type == 1 %}
+                        <td>全端口</td>
+                        {% elif task.port_type == 2%}
+                        <td>TOP100</td>
+                        {% else %}
+                        <td>TOP1000</td>
+                        {% endif %}
+                        <td>{{ (task.add_time | string)[0:16] }}</td>
+                        <td>{{ (task.end_time | string)[0:16] }}</td>
+                        {% if task.status == 1 %}
+                        <td>waiting</td>
+                        {% elif task.status == 2 %}
+                        <td>scanning
+                            <div class="spinner-grow spinner-grow-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                        {% else %}
+                        <td>finished</td>
+                        {% endif %}
+                        <td>
+                            <button type="button" class="btn btn-secondary btn-sm btn-delete"
+                                    data-target="{{ task.id }}">
+                                删除任务
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--创建任务 dialog-->
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskCreateModalLabel">创建任务</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="form-group row">
+                        <label for="taskName" class="col-sm-2 col-form-label"><code>*</code>任务名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="taskName" placeholder="请输入任务名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="taskTarget" class="col-sm-2 col-form-label"><code>*</code>目标:</label>
+                        <div class="col-sm-10">
+                              <textarea class="form-control" id="taskTarget" rows="6"
+                                        placeholder="请输入目标，支持IP、IP段、域名"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="portType" class="col-sm-2 col-form-label"><code>*</code>扫描类型:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control bg-light" id="portType">
+                                <option value="2">TOP100</option>
+                                <option value="3">TOP1000</option>
+                                <option value="1">全端口(不推荐)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row text-center m-4">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>操作系统识别
+                            </label>
+                        </div>
+                        <div class="form-check ml-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>端口扫描
+                            </label>
+                        </div>
+                        <div class="form-check ml-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>服务识别
+                            </label>
+                        </div>
+                        <div class="form-check ml-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>域名爆破
+                            </label>
+                        </div>
+                        <div class="form-check ml-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>站点识别
+                            </label>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success task-create">创建</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extrascript %}
+
+{% endblock %}

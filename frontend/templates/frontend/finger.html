@@ -1,0 +1,102 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+
+
+<div class="row my-3">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row p-3">
+                    <div class="col d-flex flex-column flex-md-row align-items-center">
+                        <i class="bi bi-fingerprint" style="font-size:40px"></i>
+                        <div class="ml-3">
+                            <h4> 指纹列表 </h4>
+                            <p class="text-muted mb-0"> 用于识别服务或站点信息 </p>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <button class="btn btn-primary mr-3" data-toggle="modal" data-target="#fingerModal">
+                            添加指纹
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <table class="table finger-list">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>finger_id</th>
+                            <th>指纹名称</th>
+                            <th>指纹描述</th>
+                            <th>fingerprint</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for finger in finger_list %}
+                        <tr>
+                            <td># {{ loop.index }}</td>
+                            <td>{{ (finger.id | string)[3:10] ~ "..." }}</td>
+                            <td>{{ finger.name }}</td>
+                            <td>{{ finger.desc }}</td>
+                            <td>{{ (finger.finger_print | string)[0:15] ~ "..." }}</td>
+                            <td>{{ (finger.add_time | string)[0:16] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm finger-delete"
+                                        data-target="{{ finger.id }}">
+                                    删除指纹
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="fingerModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加指纹信息</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="fingerName"><code>*</code>指纹名称</label>
+                        <input type="text" class="form-control" id="fingerName" placeholder="请输入名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="fingerDesc">指纹描述</label>
+                        <input type="text" class="form-control" id="fingerDesc" placeholder="请输入指纹的描述信息">
+                    </div>
+                    <div class="form-group">
+                        <label for="fingerPrint"><code>*</code>目标</label>
+                        <textarea class="form-control" id="fingerPrint" rows="6"
+                        placeholder='只支持body，title，header，icon_hash四个字段，仅可以使用逻辑或，如body="Powered by Bupt"'></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success finger-create">创建</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+{% block extrascript %}
+<script src="/static/js/form-addons.js"></script>
+<script src="/static/js/my.js"></script>
+{% endblock %}
