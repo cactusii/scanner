@@ -1,3 +1,5 @@
+![](README.assets/python-3.6-blue.svg)![](https://img.shields.io/badge/django-3.2.11-darkgreen.svg)
+
 资产扫描工具——用以发现IP、服务、站点、子域名等资产，支持带权限的扫描和添加指纹功能。
 
 ## Usage
